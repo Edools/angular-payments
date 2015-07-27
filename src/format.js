@@ -58,7 +58,7 @@ angular.module('angularPayments')
       if (re.test(value)) {
         e.preventDefault();
         value = value + ' ' + digit;
-        
+
         $target.val(value);        
         ctrl.$setViewValue(value);
       } else if (re.test(value + digit)) {
@@ -99,8 +99,7 @@ angular.module('angularPayments')
       }
   };
 
-  var _formatBackCardNumber = function (ctrl) {
-    return function(e) {
+  var _formatBackCardNumber = function(e) {
       var $target, value;
       
       $target = angular.element(e.currentTarget);
@@ -125,8 +124,7 @@ angular.module('angularPayments')
         e.preventDefault();
         return $target.val(value.replace(/\s\d?$/, ''));
       }
-    }
-  };
+    };
 
   var _getFormattedCardNumber = function(num) {
       var card, groups, upperLength, ref;
@@ -172,7 +170,7 @@ angular.module('angularPayments')
   _formats['card'] = function(elem, ctrl){
     elem.bind('keypress', _restrictCardNumber);
     elem.bind('keypress', _formatCardNumber(ctrl));
-    elem.bind('keydown', _formatBackCardNumber(ctrl));
+    elem.bind('keydown', _formatBackCardNumber);
     elem.bind('paste', _reFormatCardNumber);
 
     ctrl.$parsers.push(_parseCardNumber);
