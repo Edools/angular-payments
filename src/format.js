@@ -21,7 +21,8 @@ angular.module('angularPayments')
 
   // card formatting
 
-  var _formatCardNumber = function(e) {
+  var _formatCardNumber = function (ctrl) {
+    return function(e) {
       var $target, card, digit, length, re, upperLength, value;
       
       digit = String.fromCharCode(e.which);
@@ -56,13 +57,18 @@ angular.module('angularPayments')
 
       if (re.test(value)) {
         e.preventDefault();
-        return $target.val(value + ' ' + digit);
+        value = value + ' ' + digit;
 
+        $target.val(value);        
+        ctrl.$setViewValue(value);
       } else if (re.test(value + digit)) {
         e.preventDefault();
-        return $target.val(value + digit + ' ');
+        value = value + digit + ' ';
 
+        $target.val(value);
+        ctrl.$setViewValue(value);
       }
+    }
   };
 
   var _restrictCardNumber = function(e) {
@@ -163,7 +169,7 @@ angular.module('angularPayments')
 
   _formats['card'] = function(elem, ctrl){
     elem.bind('keypress', _restrictCardNumber);
-    elem.bind('keypress', _formatCardNumber);
+    elem.bind('keypress', _formatCardNumber(ctrl));
     elem.bind('keydown', _formatBackCardNumber);
     elem.bind('paste', _reFormatCardNumber);
 
